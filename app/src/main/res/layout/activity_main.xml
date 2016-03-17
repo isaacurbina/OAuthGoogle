@@ -6,6 +6,11 @@
     android:padding="16dp"
     tools:context=".MainActivity" >
 
+    <ImageView
+        android:id="@+id/imgProfileCover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/llProfile"
         android:layout_width="fill_parent"
@@ -18,7 +23,8 @@
         <ImageView
             android:id="@+id/imgProfilePic"
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_gallery"
             android:layout_weight="1"/>
 
         <LinearLayout
@@ -33,6 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:hint="Name"
                 android:textSize="20dp" />
 
             <TextView
@@ -40,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
+                android:hint="Email"
                 android:textSize="18dp" />
         </LinearLayout>
     </LinearLayout>

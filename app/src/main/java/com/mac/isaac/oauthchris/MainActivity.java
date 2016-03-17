@@ -54,6 +54,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
     private SignInButton btnSignIn;
     private Button btnSignOut, btnRevokeAccess;
     private ImageView imgProfilePic;
+    private ImageView imgProfileCover;
     private TextView txtName, txtEmail;
     private LinearLayout llProfileLayout;
 
@@ -66,6 +67,7 @@ public class MainActivity extends Activity implements View.OnClickListener,
         btnSignOut = (Button) findViewById(R.id.btn_sign_out);
         btnRevokeAccess = (Button) findViewById(R.id.btn_revoke_access);
         imgProfilePic = (ImageView) findViewById(R.id.imgProfilePic);
+        imgProfileCover = (ImageView) findViewById(R.id.imgProfileCover);
         txtName = (TextView) findViewById(R.id.txtName);
         txtEmail = (TextView) findViewById(R.id.txtEmail);
         llProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
@@ -79,7 +81,9 @@ public class MainActivity extends Activity implements View.OnClickListener,
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .addScope(Plus.SCOPE_PLUS_PROFILE)
+                .build();
     }
 
     protected void onStart() {
@@ -226,8 +230,9 @@ public class MainActivity extends Activity implements View.OnClickListener,
                 String personPhotoUrl = currentPerson.getImage().getUrl();
                 String personGooglePlusProfile = currentPerson.getUrl();
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+                String personCoverUrl = currentPerson.getCover().getCoverPhoto().getUrl();
 
-                Log.e(TAG, "Name: " + personName + ", plusProfile: "
+                Log.i(TAG, "Name: " + personName + ", plusProfile: "
                         + personGooglePlusProfile + ", email: " + email
                         + ", Image: " + personPhotoUrl);
 
@@ -242,13 +247,14 @@ public class MainActivity extends Activity implements View.OnClickListener,
                         + PROFILE_PIC_SIZE;
 
                 new LoadProfileImage(imgProfilePic).execute(personPhotoUrl);
+                new LoadProfileImage(imgProfileCover).execute(personCoverUrl);
 
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Person information is null", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "Error reading info from profile: "+e.getMessage());
         }
     }
 
